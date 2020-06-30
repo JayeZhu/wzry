@@ -14,7 +14,8 @@ Vue.use(VueRouter)
     component: Main,
     children: [
       { path: '/categories/create', component: CategoryEdit },
-      { path: '/categories/list', component: CategoryList }
+      { path: '/categories/list', component: CategoryList },
+      { path: '/categories/edit/:id', component: CategoryEdit, props: true }, // 如果 props 被设置为 true，route.params 将会被设置为组件属性
     ]
   },
   
