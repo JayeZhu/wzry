@@ -7,7 +7,7 @@ module.exports = app => {
 
   const Category = require('../../models/Category');
   router.get('/categories', async (req, res) => {
-    const items = await Category.find();
+    const items = await Category.find().populate('parent');
     res.send(items);
   });
 
