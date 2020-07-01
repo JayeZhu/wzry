@@ -5,6 +5,8 @@ const app = express();
 require('./routers/admin')(app);
 require('./plugins/db')(app);
 
+app.use('/uploads', express.static(__dirname + '/uploads')); // 托管静态文件
+
 app.listen(3000, () => {
   console.log('http://localhost:3000');
 })

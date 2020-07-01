@@ -49,4 +49,16 @@ module.exports = app => {
     req.Model = require(`../../models/${modelName}`);
     next(); // 执行下一步
   }, router);
+
+  // 导入multer，建立文档中间件 upload
+  const multer = require('multer');
+  // 地址使用绝对地址
+  const upload = multer({ dest: __dirname + '/../../uploads' });
+
+  // 加入中间件， single代表单个文件， file是接收到的文件
+  app.post('/admin/api/upload', upload.single('file'), async (req, res) => {
+    const file = req.file;
+    file.url = `http://localhost:3000/uploads/${file.filename}`
+    res.send(file);
+  })
 }
