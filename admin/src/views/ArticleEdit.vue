@@ -3,7 +3,7 @@
     <h1>{{ header }}</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
       <el-form-item label="所属分类">
-        <el-select v-model="model.categories" multiole>
+        <el-select v-model="model.categories" multiple>
           <el-option
             v-for="item in categories"
             :key="item._id"
@@ -15,6 +15,12 @@
       <el-form-item label="标题">
         <el-input v-model="model.title"></el-input>
       </el-form-item>
+      <el-form-item label="详情">
+        <vue-editor
+          v-model="model.body"
+          useCustomImageHandler
+          @image-added="handleImageAdded"></vue-editor>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
       </el-form-item>
@@ -23,9 +29,13 @@
 </template>
 
 <script>
+import { VueEditor} from 'vue2-editor'; // 富文本编辑器
 export default {
   props: {
-    id: String
+    id: {}
+  },
+  components: {
+    VueEditor
   },
   data: () => ({
     model: {},
@@ -62,6 +72,19 @@ export default {
     async fetchCategories () {
       const res = await this.$http.get(`rest/categories`);
       this.categories = res.data;
+    },
+    // 文件上传
+    async handleImageAdded (file, Editor, cursorLocation, resetUploader) {
+      // An example of using FormData
+      // NOTE: Your key could be different such as:
+      // formData.append('file', file)
+ 
+      const formData = new FormData();
+      formData.append("file", file);
+ 
+      const res = await this.$http.post('upload', formData);
+      Editor.insertEmbed(cursorLocation, "image", res.data.url);
+      resetUploader();
     }
   }
 }
