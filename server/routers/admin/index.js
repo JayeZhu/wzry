@@ -60,5 +60,30 @@ module.exports = app => {
     const file = req.file;
     file.url = `http://localhost:3000/uploads/${file.filename}`
     res.send(file);
-  })
+  });
+
+  app.post('/admin/api/login', async (req, res) => {
+    const { username, password } = req.body;
+    // 1.根据用户名找用户
+    const AdminUser = require('../../models/AdminUser'); // 引入管理员模型
+    const user = await AdminUser.findOne({ username }).select('+password'); // 通过 username 寻找 user, select添加查找password
+    if (!user) {
+      return res.status(422).send({
+        message: '用户不存在'
+      });
+    }
+
+    // 2.校验密码
+    const isValid = require('bcryptjs').compareSync(password, user.password); // 使用 bcrypt 的 校验 明文和密文
+    if (!isValid) {
+      return res.status(422).send({
+        message: '密码错误'
+      });
+    }
+
+    // 3.返回token
+    const jwt = require('jsonwebtoken'); // 引入jwt
+    const token = jwt.sign({ id: user._id }, app.get('secret'));
+    res.send({ token });
+  });
 }

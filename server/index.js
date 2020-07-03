@@ -2,6 +2,8 @@ const express = require('express');
 
 const app = express();
 
+app.set('secret', '123dewdwfwe'); // 全局设置 jwt所需的 秘钥
+
 require('./routers/admin')(app);
 require('./plugins/db')(app);
 
