@@ -9,6 +9,7 @@
         <el-upload
           class="avatar-uploader"
           :action="imgAction"
+          :headers="getAuthHeaders()"
           :show-file-list="false"
           :on-success="afterUpload">
           <img v-if="model.icon" :src="model.icon" class="avatar">

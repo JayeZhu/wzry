@@ -83,6 +83,7 @@
                 <el-upload
                   class="avatar-uploader"
                   :action="imgAction"
+                  :headers="getAuthHeaders()"
                   :show-file-list="false"
                   :on-success="res => $set(item, 'icon', res.url)">
                   <img v-if="item.icon" :src="item.icon" class="avatar">
@@ -135,9 +136,6 @@ export default {
   computed: {
     header () {
       return (this.id ? '编辑' : '创建') + '英雄'
-    },
-    imgAction () {
-      return this.$http.defaults.baseURL + '/upload'
     }
   },
   created() {
