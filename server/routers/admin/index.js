@@ -23,7 +23,7 @@ module.exports = app => {
       // 选择性 使用 populate
       queryOptions.populate = 'parent';
     }
-    const items = await req.Model.find().setOptions({ queryOptions }); // 利用setOptions传入 查询选项
+    const items = await req.Model.find().setOptions(queryOptions); // 利用setOptions传入 查询选项
     res.send(items);
   });
 

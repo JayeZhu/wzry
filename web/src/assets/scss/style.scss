@@ -1,4 +1,6 @@
 // 样式重置
+@import './variables';
+
 * {
   box-sizing: border-box;
   outline: none;
@@ -21,19 +23,6 @@ a {
   color: #999;
 }
 
-// colors
-$colors: (
-  'primary': #db9e3f,
-  'info': #db9e3f,
-  'white': #fff,
-  'light': #f9f9f9,
-  'grey': #999,
-  'grey-1': #666,
-  'dark-1': #343440,
-  'black': #000,
-  'dark': #222,
-);
-
 @each $key, $var in $colors {
   .text-#{$key} {
     color: $var
@@ -45,25 +34,14 @@ $colors: (
 
 //text-align
 @each $var in (left, center, right) {
-  text-#{$var} {
+  .text-#{$var} {
     text-align: $var !important;
   }
 }
 
-$base-font-szie: 1rem;
-// font-size
-$font-sizes: (
-  xxs: 0.6154,
-  xs: 0.7692,
-  sm: 0.9231,
-  md: 1,
-  lg: 1.0769,
-  xl: 1.2308
-);
-
 @each $key, $var in $font-sizes {
   .fs-#{$key} {
-    font-size: $var
+    font-size: $var * $base-font-szie;
   }
 }
 
@@ -74,17 +52,12 @@ $font-sizes: (
 .flex-column {
   flex-direction: column;
 }
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .flex-1 {
   flex: 1;
 }
-
-$flex-jc: (
-  'start': flex-start,
-  'end': flex-end,
-  'center': center,
-  'between': space-between,
-  'around': space-around,
-);
 
 @each $key, $var in $flex-jc {
   .jc-#{$key} {
@@ -92,43 +65,11 @@ $flex-jc: (
   }
 }
 
-$flex-ai: (
-  'start': flex-start,
-  'end': flex-end,
-  'center': center,
-  'stretch': stretch
-);
-
 @each $key, $var in $flex-ai {
   .ai-#{$key} {
     align-items: $var;
   }
 }
-
-//spacing
-$spacing-types: (
-  m: margin,
-  p: padding,
-);
-$spacing-directions: (
-  t: top,
-  r: right,
-  b: bottom,
-  l: left
-);
-$spacing-base-size:  1rem;
-$spacing-sizes: (
-  0: 0,
-  1: 0.25,
-  2: 0.5,
-  3: 1,
-  4: 1.5,
-  5: 3
-);
-
-
-
-
 
 @each $typeKey, $type in $spacing-types {
   @each $directionKey,$direction in $spacing-directions {
@@ -165,16 +106,65 @@ $spacing-sizes: (
 
 // nav
 .nav {
+  display: flex;
   .nav-item {
     padding-bottom: 0.2rem;
     // 未激活的也加边框，透明
     border-bottom: 3px solid transparent;
     &.active {
-      border-bottom: 3px solid #fff;
+      color: map-get($colors, 'primary');
+      border-bottom: 3px solid map-get($colors, 'primary');
+    }
+  }
+  &.nav-inverse {
+    .nav-item {
+      color: map-get($colors, 'white');
+      &.active {
+        border-bottom-color: map-get($colors, 'white');
+      }
     }
   }
 }
 
 .w-100 {
   width: 100%;
+}
+
+// borders
+@each $dir in (top, right, bottom, left) {
+  .border-#{$dir} {
+    border-#{$dir}: 1px solid $border-color;
+  }
+}
+
+//sprite
+.sprite {
+  background: url(../images/index.png);
+  background-size: 28.8462rem;
+  display: inline-block;
+  &.sprite-item {
+    width: 1.7692rem;
+    height: 1.5385rem;
+  }
+  // &.sprite-news {
+  //   background-position: 63.546% 15.517%;
+  // }
+  &.sprite-arrow {
+    width: 0.7692rem;
+    height: 0.7692rem;
+    background-position: 38.577% 52.076%;
+  }
+}
+@each $key, $val in $sprite-items {
+  .sprite-#{$key} {
+    background-position: $val;
+  }
+}
+
+// text overflow
+.text-ellipsis {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -1,10 +1,9 @@
 <template>
   <el-container style="height: 100vh">
   `  <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu router :default-openeds="['1']" unique-opened :default-active="$route.path">
+      <el-menu router :default-openeds="openeds" unique-opened :default-active="$route.path" @select="select">
         <el-submenu index="1">
           <template slot="title"><i class="el-icon-message"></i>内容管理</template>
-          
           <el-menu-item-group>
             <template slot="title">物品</template>
             <el-menu-item index="/items/create">新建物品</el-menu-item>
@@ -20,7 +19,6 @@
             <el-menu-item index="/articles/create">新建文章</el-menu-item>
             <el-menu-item index="/articles/list">文章列表</el-menu-item>
           </el-menu-item-group>
-          
         </el-submenu>
         <el-submenu index="2">
           <template slot="title">
@@ -62,7 +60,7 @@
         </el-dropdown>
         <span>王小虎</span>
       </el-header>
-      <router-view></router-view>
+      <router-view :key="$route.path"></router-view>
     </el-container>
   </el-container>
 </template>
@@ -76,7 +74,13 @@ export default {
       address: '上海市普陀区金沙江路 1518 弄'
     };
     return {
-      tableData: Array(20).fill(item)
+      tableData: Array(20).fill(item),
+      openeds: ['1']
+    }
+  },
+  methods: {
+    select (index) {
+      console.log(index);
     }
   }
 };
