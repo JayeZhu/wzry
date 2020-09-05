@@ -22,19 +22,32 @@
     <!-- end-of-nav-items -->
     <m-list-card title="新闻资讯" icon="menu1" :categories="newsCats">
       <template #items="{category}">
-        <div class="py-2 d-flex" v-for="(item, i) in category.newsList" :key="i">
+        <router-link
+          tag="div"
+          class="py-2 d-flex"
+          :to="`/articles/${item._id}`"
+          v-for="(item, i) in category.newsList"
+          :key="i"
+        >
           <span class="text-info">[{{item.categoryName}}]</span>
           <span class="px-2">|</span>
           <span class="flex-1 text-dark-1 text-ellipsis pr-2">{{item.title}}</span>
           <span class="text-grey-1 fs-sm">{{item.createdAt | date}}</span>
+        </router-link>
+      </template>
+    </m-list-card>
+
+    <m-list-card title="英雄列表" icon="menu1" :categories="heroCats">
+      <template #items="{category}">
+        <div class="d-flex flex-wrap" style="margin: 0 -0.5rem">
+          <router-link tag="div" :to="`/heroes/${hero._id}`" class="p-2 text-center" style="width:20%" v-for="(hero, i) in category.heroList" :key="i">
+            <img :src="hero.avatar" class="w-100" alt="">
+            <div>{{hero.name}}</div>
+          </router-link>
         </div>
       </template>
     </m-list-card>
-    <p>12331</p>
-    <p>12331</p>
-    <p>12331</p>
-    <p>12331</p>
-    <p>12331</p>
+    <p></p>
   </div>
 </template>
 
@@ -52,7 +65,10 @@ export default {
     swiperOptions: {
       pagination: {
         el: '.pagination-home'
-      }
+      },
+      loop: true,
+      autoplay: true,
+      autoplayDisableOnInteraction: false,
     },
     navItems: [
       { icon: 'news', text: '爆料站' },
@@ -66,17 +82,24 @@ export default {
       { icon: 'public', text: '公众号' },
       { icon: 'version', text: '版本介绍' },
     ],
-    newsCats: []
+    newsCats: [],
+    heroCats: []
   }),
   created () {
-    this.fetchNewsCats();
+    this.fetchNewCats();
+    this.fetchHeroCats();
   },
   methods: {
-    async fetchNewsCats () {
+    async fetchNewCats () {
       const res = await this.$http.get('news/list');
       res.data.splice(1, 1);
       console.log(res.data);
       this.newsCats = res.data;
+    },
+    async fetchHeroCats () {
+      const res = await this.$http.get('heroes/list');
+      console.log(res.data);
+      this.heroCats = res.data;
     }
   }
 }

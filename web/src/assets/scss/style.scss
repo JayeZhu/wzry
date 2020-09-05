@@ -23,6 +23,10 @@ a {
   color: #999;
 }
 
+p {
+  line-height: 1.5rem;
+}
+
 @each $key, $var in $colors {
   .text-#{$key} {
     color: $var
@@ -128,6 +132,9 @@ a {
 
 .w-100 {
   width: 100%;
+}
+.h-100 {
+  height: 100%
 }
 
 // borders
